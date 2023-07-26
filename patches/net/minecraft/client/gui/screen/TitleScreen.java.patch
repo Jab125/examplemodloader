@@ -1,0 +1,73 @@
+--- a/net/minecraft/client/gui/screen/TitleScreen.java
++++ b/net/minecraft/client/gui/screen/TitleScreen.java
+@@ -153,2 +152,4 @@
+-    private void initWidgetsNormal(int $$02, int $$1) {
+-        this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.singleplayer"), $$0 -> this.client.setScreen(new SelectWorldScreen(this))).dimensions(this.width / 2 - 100, $$02, 200, 20).build());
++    private void initWidgetsNormal(int $$0, int $$1) {
++        this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.singleplayer"), ($$0x) -> {
++            this.client.setScreen(new SelectWorldScreen(this));
++        }).dimensions(this.width / 2 - 100, $$0, 200, 20).build());
+@@ -158,2 +159,7 @@
+-        this.addDrawableChild(ButtonWidget.builder((Text)Text.translatable((String)"menu.multiplayer"), (ButtonWidget.PressAction)(ButtonWidget.PressAction)LambdaMetafactory.metafactory(null, null, null, (Lnet/minecraft/client/gui/widget/ButtonWidget;)V, onMultiplayerButtonPressed(net.minecraft.client.gui.widget.ButtonWidget ), (Lnet/minecraft/client/gui/widget/ButtonWidget;)V)((TitleScreen)this)).dimensions((int)(this.width / 2 - 100), (int)($$02 + $$1 * 1), (int)200, (int)20).tooltip((Tooltip)$$4).build()).active = $$3;
+-        this.addDrawableChild(ButtonWidget.builder((Text)Text.translatable((String)"menu.online"), (ButtonWidget.PressAction)(ButtonWidget.PressAction)LambdaMetafactory.metafactory(null, null, null, (Lnet/minecraft/client/gui/widget/ButtonWidget;)V, onRealmsButtonPress(net.minecraft.client.gui.widget.ButtonWidget ), (Lnet/minecraft/client/gui/widget/ButtonWidget;)V)((TitleScreen)this)).dimensions((int)(this.width / 2 - 100), (int)($$02 + $$1 * 2), (int)200, (int)20).tooltip((Tooltip)$$4).build()).active = $$3;
++        ((ButtonWidget)this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.multiplayer"), ($$0x) -> {
++            Screen $$12 = this.client.options.skipMultiplayerWarning ? new MultiplayerScreen(this) : new MultiplayerWarningScreen(this);
++            this.client.setScreen((Screen)$$12);
++        }).dimensions(this.width / 2 - 100, $$0 + $$1 * 1, 200, 20).tooltip($$4).build())).active = $$3;
++        ((ButtonWidget)this.addDrawableChild(ButtonWidget.builder(Text.translatable("menu.online"), ($$0x) -> {
++            this.switchToRealms();
++        }).dimensions(this.width / 2 - 100, $$0 + $$1 * 2, 200, 20).tooltip($$4).build())).active = $$3;
+@@ -188,2 +194,2 @@
+-            try (LevelStorage.Session $$2 = $$1.createSessionWithoutSymlinkCheck(DEMO_WORLD_NAME);){
+-                LevelSummary $$3 = $$2.getLevelSummary();
++            try (LevelStorage.Session $$$2 = $$1.createSessionWithoutSymlinkCheck(DEMO_WORLD_NAME);){
++                LevelSummary $$3 = $$$2.getLevelSummary();
+@@ -202,3 +208,4 @@
+-        boolean bl;
+-        block8: {
+-            LevelStorage.Session $$0 = this.client.getLevelStorage().createSessionWithoutSymlinkCheck(DEMO_WORLD_NAME);
++        try {
++            LevelStorage.Session $$0 = this.client.getLevelStorage().createSessionWithoutSymlinkCheck("Demo_World");
++
++            boolean var2;
+@@ -206,10 +213,7 @@
+-                boolean bl2 = bl = $$0.getLevelSummary() != null;
+-                if ($$0 == null) break block8;
+-            } catch (Throwable throwable) {
+-                try {
+-                    if ($$0 != null) {
+-                        try {
+-                            $$0.close();
+-                        } catch (Throwable throwable2) {
+-                            throwable.addSuppressed(throwable2);
+-                        }
++                var2 = $$0.getLevelSummary() != null;
++            } catch (Throwable var5) {
++                if ($$0 != null) {
++                    try {
++                        $$0.close();
++                    } catch (Throwable var4) {
++                        var5.addSuppressed(var4);
+@@ -217,5 +221,0 @@
+-                    throw throwable;
+-                } catch (IOException $$1) {
+-                    SystemToast.addWorldAccessFailureToast(this.client, DEMO_WORLD_NAME);
+-                    LOGGER.warn("Failed to read demo world data", (Throwable)$$1);
+-                    return false;
+@@ -222,0 +223,2 @@
++
++                throw var5;
+@@ -224,1 +225,10 @@
+-            $$0.close();
++
++            if ($$0 != null) {
++                $$0.close();
++            }
++
++            return var2;
++        } catch (IOException var6) {
++            SystemToast.addWorldAccessFailureToast(this.client, "Demo_World");
++            LOGGER.warn("Failed to read demo world data", var6);
++            return false;
+@@ -226,1 +236,0 @@
+-        return bl;

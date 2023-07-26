@@ -9,6 +9,9 @@ version '1.0.0'
 repositories {
     mavenCentral()
 }
+mcCustom {
+    patchedClasses.addAll("net/minecraft/client/gui/screen/TitleScreen")
+}
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
