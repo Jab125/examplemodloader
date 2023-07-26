@@ -8,4 +8,9 @@ public class LoaderBranding {
     private static String getTweakLoaderVersion() {
         return null;
     }
+
+    public static String getBranding(String name) {
+        if (name.equals("vanilla")) return "example-modloader";
+        return "example-modloader:" + name;
+    }
 }

@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 mcCustom {
-    patchedClasses.addAll("net/minecraft/client/gui/screen/TitleScreen")
+    patchedClasses.addAll("net/minecraft/client/gui/screen/TitleScreen", "net/minecraft/client/ClientBrandRetriever")
 }
 
 dependencies {

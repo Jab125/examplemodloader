@@ -1,0 +1,5 @@
+--- a/net/minecraft/client/ClientBrandRetriever.java
++++ b/net/minecraft/client/ClientBrandRetriever.java
+@@ -13,1 +12,1 @@
+-        return VANILLA;
++        return com.jab125.loader.LoaderBranding.getBranding(VANILLA);
