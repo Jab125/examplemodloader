@@ -71,3 +71,16 @@
 +            return false;
 @@ -226,1 +236,0 @@
 -        return bl;
+@@ -256,4 +265,6 @@
+-        String $$7 = "Minecraft " + SharedConstants.getGameVersion().getName();
+-        $$7 = this.client.isDemo() ? $$7 + " Demo" : $$7 + (String)("release".equalsIgnoreCase(this.client.getVersionType()) ? "" : "/" + this.client.getVersionType());
+-        if (MinecraftClient.getModStatus().isModded()) {
+-            $$7 = $$7 + I18n.translate("menu.modded", new Object[0]);
++        String[] lines = com.jab125.loader.LoaderBranding.LINES;
++        int offset = this.height - 10;
++        int fontHeight = this.textRenderer.fontHeight;
++        for (String line : lines) {
++            $$0.drawTextWithShadow(this.textRenderer, line, 2, offset, 0xFFFFFF | $$6);
++            offset -= fontHeight;
+@@ -261,1 +272,0 @@
+-        $$0.drawTextWithShadow(this.textRenderer, $$7, 2, this.height - 10, 0xFFFFFF | $$6);
