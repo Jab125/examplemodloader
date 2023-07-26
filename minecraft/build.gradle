@@ -1,0 +1,54 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.github.johnrengelman:shadow:7.1.2'
+    }
+}
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "java"
+
+repositories {
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        url = "https://maven.fabricmc.net/"
+    }
+}
+configurations {
+    implementation.extendsFrom api
+    shade
+}
+
+def asmVersion = "9.4"
+dependencies {
+    implementation "net.fabricmc:cfr:0.2.0"
+    implementation fileTree(include: ['*.jar'], dir: '.install/libraries')
+    implementation fileTree(include: ['*.jar'], dir: 'libraries')
+    shade(implementation fileTree(include: ['mcp.jar'], dir: 'mcp'))
+    implementation 'org.jetbrains:annotations:23.0.0'
+    // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    api "org.ow2.asm:asm:${asmVersion}"
+    api "org.ow2.asm:asm-analysis:${asmVersion}"
+    api "org.ow2.asm:asm-commons:${asmVersion}"
+    api "org.ow2.asm:asm-tree:${asmVersion}"
+    api "org.ow2.asm:asm-util:${asmVersion}"
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ["src/patches"]
+        }
+    }
+}
